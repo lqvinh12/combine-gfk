@@ -9,6 +9,7 @@ Only need to run once
 1. Copy all files need to combine to `input` folder
 2. Run `python3 app.py` in terminal or run `app.py` in VSCode
 3. The output file will be in `output` folder with name `%Y%m%d %H%M%S Gfk Dealer Monitor (combined).xlsx`
+4. Check logs folder for more information
 
 
 # Logs

@@ -73,19 +73,19 @@ for input_file in input_files:
                                     logger, input_file)
                     
                     # dk_current
-                    dk_current_col = capacity_current_col + 3
+                    dk_current_col = capacity_previous_col + 3
                     copy_cell_value(ws, master_wb_current_row, dk_current_col,
                                     input_ws, row, dk_current_col,
                                     logger, input_file)
                     
                     # pn_prevous
-                    pn_previous_col = dk_previous_col + 6
+                    pn_previous_col = capacity_previous_col + 6
                     copy_cell_value(ws, master_wb_current_row, pn_previous_col,
                                     input_ws, row, pn_previous_col,
                                     logger, input_file)
                     
                     # pn_current
-                    pn_current_col = dk_current_col + 7
+                    pn_current_col = capacity_previous_col + 7
                     copy_cell_value(ws, master_wb_current_row, pn_current_col,
                                     input_ws, row, pn_current_col,
                                     logger, input_file)
