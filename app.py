@@ -1,6 +1,7 @@
 import openpyxl as xl
 import os
 from init.app_logger import *
+from init.lib import *
 
 #init
 template_file = 'template/gfk_template.xlsx'
@@ -13,7 +14,9 @@ ws = wb.active
 
 # get all file .xlsx in input folder
 input_files = os.listdir(input_folder)
-input_files = [file for file in input_files if '~' not in file]  
+input_files = [file for file in input_files if '~$' not in file]
+input_files.remove('.gitkeep')
+
 logger.debug(f'Total {len(input_files)} files in input folder')
 
 master_wb_current_row = start_row
@@ -53,30 +56,45 @@ for input_file in input_files:
                 for month in [0, 1, 2]:
                     # capacity_previous 
                     capacity_previous_col = start_col + quater_start_col + month*10
-                    ws.cell(master_wb_current_row, capacity_previous_col ).value = input_ws.cell(row, capacity_previous_col).value
-                    
+                    copy_cell_value(ws, master_wb_current_row, capacity_previous_col,
+                                    input_ws, row, capacity_previous_col,
+                                    logger, input_file)       
 
                     # capacity_current
-                    ws.cell(master_wb_current_row, capacity_previous_col + 1 ).value = input_ws.cell(row, capacity_previous_col + 1).value
+                    capacity_current_col = capacity_previous_col + 1
+                    copy_cell_value(ws, master_wb_current_row, capacity_current_col,
+                                    input_ws, row, capacity_current_col,
+                                    logger, input_file)
 
                     # dk_previous
-                    ws.cell(master_wb_current_row, capacity_previous_col + 2).value = input_ws.cell(row, capacity_previous_col + 2).value
+                    dk_previous_col = capacity_previous_col + 2
+                    copy_cell_value(ws, master_wb_current_row, dk_previous_col,
+                                    input_ws, row, dk_previous_col,
+                                    logger, input_file)
                     
-
                     # dk_current
-                    ws.cell(master_wb_current_row, capacity_previous_col + 3).value = input_ws.cell(row, capacity_previous_col + 3).value
+                    dk_current_col = capacity_current_col + 3
+                    copy_cell_value(ws, master_wb_current_row, dk_current_col,
+                                    input_ws, row, dk_current_col,
+                                    logger, input_file)
                     
                     # pn_prevous
-                    ws.cell(master_wb_current_row, capacity_previous_col + 6).value = input_ws.cell(row, capacity_previous_col + 6).value
+                    pn_previous_col = dk_previous_col + 6
+                    copy_cell_value(ws, master_wb_current_row, pn_previous_col,
+                                    input_ws, row, pn_previous_col,
+                                    logger, input_file)
                     
                     # pn_current
-                    ws.cell(master_wb_current_row, capacity_previous_col + 7).value = input_ws.cell(row, capacity_previous_col + 7).value
+                    pn_current_col = dk_current_col + 7
+                    copy_cell_value(ws, master_wb_current_row, pn_current_col,
+                                    input_ws, row, pn_current_col,
+                                    logger, input_file)
 
             master_wb_current_row += 1
-            
+
 # delete empty rows
 ws.delete_rows(master_wb_current_row, ws.max_row - master_wb_current_row + 1)
-export_file_name = f'output/{timestamp} combine.xlsx'
+export_file_name = f'output/{timestamp} Gfk Dealer Monitor (combined).xlsx'
 wb.save(export_file_name)
 logger.debug(f'Exported: {export_file_name}')
 logger.debug('Script Done!')
